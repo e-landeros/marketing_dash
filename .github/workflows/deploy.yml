@@ -15,10 +15,10 @@ jobs:
           lfs: true
 
       - name: Install Hugging Face Hub CLI
-        run: pip install "huggingface_hub[cli]"
+        run: pip install huggingface_hub
 
       - name: Push to Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python -m huggingface_hub.cli upload elanderos/marketing-analytics-dashboard . . --repo-type space --exclude ".git/*" ".github/*" ".DS_Store" "uv.lock" "README.md"
+          python -c "from huggingface_hub import HfApi; api = HfApi(token='${{ secrets.HF_TOKEN }}'); api.upload_folder(repo_id='elanderos/marketing-analytics-dashboard', folder_path='.', repo_type='space', ignore_patterns=['.git/*', '.github/*', '.DS_Store', 'uv.lock', 'README.md'])"
